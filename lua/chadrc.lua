@@ -17,4 +17,10 @@ M.base46 = {
 	-- },
 }
 
+M.ui = {
+	tabufline = {
+		enabled = false,  -- Disable the top buffer line
+	},
+}
+
 return M

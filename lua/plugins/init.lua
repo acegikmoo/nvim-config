@@ -14,7 +14,7 @@ return {
     "rust-lang/rust.vim",
     ft = "rust",
     init = function()
-      vim.g.rustfmt_autosave = 1
+      vim.g.rustfmt_autosave = 0
     end,
   },
   {
@@ -30,7 +30,15 @@ return {
               if client.server_capabilities.inlayHintProvider then
                 vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
               end
-            end,
+
+              -- Format on save with LSP
+              vim.api.nvim_create_autocmd("BufWritePre", {
+                buffer = bufnr,
+                callback = function()
+                  vim.lsp.buf.format({ bufnr = bufnr })
+                end,
+              })
+          end,
             default_settings = {
               ['rust-analyzer'] = {
                 -- Enable diagnostics
@@ -102,5 +110,5 @@ return {
         sources = { { name = "crates" }}
       })
     end
-  },
+  }
 }

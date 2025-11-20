@@ -7,6 +7,8 @@ require "nvchad.options"
 vim.diagnostic.enable()
 vim.opt.relativenumber = true
 vim.g.gui_font_ligatures = 0
+vim.opt.updatetime = 100
+vim.opt.showtabline = 0
 
 vim.diagnostic.config({
   virtual_text = {
