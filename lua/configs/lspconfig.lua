@@ -1,24 +1,25 @@
-local lspconfig = require("lspconfig")
-
--- list of servers with default config
--- local servers = { "html", "cssls" }
-
--- default NvChad LSP setup
+require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require("lspconfig")
 local nvlsp = require("nvchad.configs.lspconfig")
 
--- No servers, loop removed
+-- Suppress deprecation warning
+vim.deprecate = function() end
 
--- for _, lsp in ipairs(servers) do
---  lspconfig[lsp].setup {
---    on_attach = nvlsp.on_attach,
---    capabilities = nvlsp.capabilities,
---  }
--- end
-
--- Example single-server override
--- lspconfig.tsserver.setup {
---   on_attach = nvlsp.on_attach,
---   capabilities = nvlsp.capabilities,
--- }
+-- C++ LSP with clangd
+lspconfig.clangd.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  cmd = { "clangd" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "cuda", "proto" },
+  root_dir = lspconfig.util.root_pattern(
+    '.clangd',
+    '.clang-tidy',
+    '.clang-format',
+    'compile_commands.json',
+    'compile_flags.txt',
+    'configure.ac',
+    '.git'
+  ),
+}

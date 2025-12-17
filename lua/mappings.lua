@@ -33,7 +33,12 @@ map("n", "<Leader>th", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle inlay hints" })
 
--- C++ competitive programming keybindings
-map("n", "<F9>", "<cmd>!g++ -std=c++17 -O2 -Wall % -o %:r && ./%:r<CR>", { desc = "Compile and run C++" })
-map("i", "{<CR>", "{<CR>}<Esc>O", { desc = "Auto close braces" })
-map("i", "{}", "{}", { desc = "Empty braces" })
+-- C++ competitive programming with build script
+map("n", "<leader>bb", "<cmd>w | !build.sh %:r<CR>", { desc = "Build C++ with script" })
+map("n", "<leader>rr", "<cmd>!./%:r<CR>", { desc = "Run C++ binary" })
+map("n", "<leader>br", "<cmd>w | !build.sh %:r && ./%:r<CR>", { desc = "Build and run C++" })
+
+-- Select all with Ctrl+a
+map("n", "<C-a>", "ggVG", { desc = "Select all" })
+map("i", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
+map("v", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
