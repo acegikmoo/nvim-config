@@ -66,6 +66,8 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.cpp",
   callback = function()
     vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
+    vim.cmd("normal! 53G^i    ")
+    vim.cmd("startinsert")
   end,
 })
 
