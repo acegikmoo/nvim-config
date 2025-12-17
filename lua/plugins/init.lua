@@ -19,57 +19,62 @@ return {
   },
   {
     "mrcjkb/rustaceanvim",
-      version = "^5",
-      ft = { "rust" },
-      config = function()
-        vim.g.rustaceanvim = {
-          tools = {},
-          server = {
-            on_attach = function(client, bufnr)
-              -- Disable inlay hints by default
-              if client.server_capabilities.inlayHintProvider then
-                vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
-              end
-
-              -- Format on save with LSP
-              vim.api.nvim_create_autocmd("BufWritePre", {
-                buffer = bufnr,
-                callback = function()
-                  vim.lsp.buf.format({ bufnr = bufnr })
-                end,
-              })
+    version = "^5",
+    ft = { "rust" },
+    init = function()
+      -- Configure rustaceanvim before it loads
+      vim.g.rustaceanvim = {
+        tools = {},
+        server = {
+          on_attach = function(client, bufnr)
+            -- Disable inlay hints by default
+            if client.server_capabilities.inlayHintProvider then
+              vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+            end
+            -- Format on save with LSP
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr })
+              end,
+            })
           end,
-            default_settings = {
-              ['rust-analyzer'] = {
-                -- Enable diagnostics
-                checkOnSave = true,
-                check = {
-                  command = "clippy",
-                },
-                diagnostics = {
-                  enable = true,
-                  disabled = {},
-                  enableExperimental = true,
-                },
-                inlayHints = {
-                  bindingModeHints = { enable = true },
-                  chainingHints = { enable = true },
-                  closingBraceHints = { enable = true, minLines = 25 },
-                  closureReturnTypeHints = { enable = "always" },
-                  lifetimeElisionHints = { enable = "always", useParameterNames = true },
-                  maxLength = 25,
-                  parameterHints = { enable = true },
-                  reborrowHints = { enable = "always" },
-                  renderColons = true,
-                  typeHints = { enable = true, hideNamedConstructor = false },
-                },
+          default_settings = {
+            ['rust-analyzer'] = {
+              -- Disable the deprecated cmp completion
+              completion = {
+                cmp = {
+                  enable = false  -- Try 'enable' instead of 'enabled'
+                }
+              },
+              checkOnSave = true,
+              check = {
+                command = "clippy",
+              },
+              diagnostics = {
+                enable = true,
+                disabled = {},
+                enableExperimental = true,
+              },
+              inlayHints = {
+                bindingModeHints = { enable = true },
+                chainingHints = { enable = true },
+                closingBraceHints = { enable = true, minLines = 25 },
+                closureReturnTypeHints = { enable = "always" },
+                lifetimeElisionHints = { enable = "always", useParameterNames = true },
+                maxLength = 25,
+                parameterHints = { enable = true },
+                reborrowHints = { enable = "always" },
+                renderColons = true,
+                typeHints = { enable = true, hideNamedConstructor = false },
               },
             },
           },
-          dap = {},
-        }
-      end,
-},
+        },
+        dap = {},
+      }
+    end,
+  },
   {
     'mfussenegger/nvim-dap',
     config = function()
@@ -110,5 +115,9 @@ return {
         sources = { { name = "crates" }}
       })
     end
-  }
+  },
+  {
+    "octol/vim-cpp-enhanced-highlight",
+    ft = { "cpp", "c" },
+  },
 }

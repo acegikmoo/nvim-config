@@ -32,3 +32,8 @@ map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "De
 map("n", "<Leader>th", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle inlay hints" })
+
+-- C++ competitive programming keybindings
+map("n", "<F9>", "<cmd>!g++ -std=c++17 -O2 -Wall % -o %:r && ./%:r<CR>", { desc = "Compile and run C++" })
+map("i", "{<CR>", "{<CR>}<Esc>O", { desc = "Auto close braces" })
+map("i", "{}", "{}", { desc = "Empty braces" })

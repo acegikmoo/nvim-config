@@ -60,3 +60,23 @@ vim.cmd([[
   highlight DiagnosticUnderlineInfo gui=underline guisp=#83a598
   highlight DiagnosticUnderlineHint gui=underline guisp=#8ec07c
 ]])
+
+-- Competitive Programming: Append template to new C++ files
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*.cpp",
+  callback = function()
+    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
+  end,
+})
+
+-- C++ specific settings (keep your preferences)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cpp",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.autoindent = true
+    vim.opt_local.smartindent = true
+  end,
+})
