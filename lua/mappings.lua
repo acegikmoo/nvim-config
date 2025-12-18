@@ -34,9 +34,13 @@ map("n", "<Leader>th", function()
 end, { desc = "Toggle inlay hints" })
 
 -- C++ competitive programming with build script
-map("n", "<leader>bb", "<cmd>w | !build.sh %:r<CR>", { desc = "Build C++ with script" })
-map("n", "<leader>rr", "<cmd>!./%:r<CR>", { desc = "Run C++ binary" })
-map("n", "<leader>br", "<cmd>w | !build.sh %:r && ./%:r<CR>", { desc = "Build and run C++" })
+map("n", "<leader>bb", "<cmd>w | !build.sh %:r<CR>", { desc = "Build" })
+map("n", "<leader>br", function()
+  vim.cmd("w")
+  vim.cmd("!build.sh " .. vim.fn.expand("%:r"))
+  vim.cmd("split | terminal ./" .. vim.fn.expand("%:r"))
+  vim.cmd("startinsert")
+end, { desc = "Build and run" })
 
 -- Select all with Ctrl+a
 map("n", "<C-a>", "ggVG", { desc = "Select all" })
