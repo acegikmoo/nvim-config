@@ -2,14 +2,12 @@ require "nvchad.options"
 -- add yours here!
 -- local o = vim.o
 -- o.cursorlineopt ='both' -- to enable cursorline!
-
 -- Force enable diagnostics and virtual text
 vim.diagnostic.enable()
 vim.opt.relativenumber = true
 vim.g.gui_font_ligatures = 0
 vim.opt.updatetime = 100
 vim.opt.showtabline = 0
-
 vim.diagnostic.config({
   virtual_text = {
     spacing = 4,
@@ -42,7 +40,6 @@ vim.diagnostic.config({
     end,
   },
 })
-
 -- Define custom diagnostic colors for Gruvbox
 vim.cmd([[
   highlight DiagnosticVirtualTextError guifg=#fb4934 guibg=#3c3836 gui=italic
@@ -60,7 +57,6 @@ vim.cmd([[
   highlight DiagnosticUnderlineInfo gui=underline guisp=#83a598
   highlight DiagnosticUnderlineHint gui=underline guisp=#8ec07c
 ]])
-
 -- Competitive Programming: Append template to new C++ files
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.cpp",
@@ -70,7 +66,6 @@ vim.api.nvim_create_autocmd("BufNewFile", {
     vim.cmd("startinsert")
   end,
 })
-
 -- C++ specific settings (keep your preferences)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cpp",
@@ -80,5 +75,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.expandtab = true
     vim.opt_local.autoindent = true
     vim.opt_local.smartindent = true
+  end,
+})
+
+-- Rust specific settings (standard Rust formatting)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
   end,
 })
