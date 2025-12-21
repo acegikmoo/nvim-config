@@ -114,4 +114,21 @@ return {
     "octol/vim-cpp-enhanced-highlight",
     ft = { "cpp", "c" },
   },
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = function()
+      local conf = require "nvchad.configs.telescope"
+      
+      -- Show hidden and gitignored files, but hide .git folder
+      conf.defaults.file_ignore_patterns = { "^%.git/", "%.git/" }
+      conf.pickers = {
+        find_files = {
+          hidden = true,
+          no_ignore = true,
+        },
+      }
+      
+      return conf
+    end,
+  },
 }
