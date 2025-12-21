@@ -28,6 +28,10 @@ map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugge
 -- rustaceanvim
 map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables" })
 
+-- NvimTree navigation
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
+map("n", "<leader>tf", "<cmd>NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
+
 -- Toggle inlay hints
 map("n", "<Leader>th", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
