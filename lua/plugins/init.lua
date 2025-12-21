@@ -104,13 +104,7 @@ return {
     'saecki/crates.nvim',
     ft = {"toml"},
     config = function()
-      require("crates").setup {
-        completion = {
-          cmp = {
-            enabled = true
-          },
-        },
-      }
+      require("crates").setup()  -- Remove the completion config
       require('cmp').setup.buffer({
         sources = { { name = "crates" }}
       })
