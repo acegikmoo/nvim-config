@@ -131,4 +131,24 @@ return {
       return conf
     end,
   },
+  {
+    "nvim-tree/nvim-tree.lua",
+    opts = function()
+      local conf = require "nvchad.configs.nvimtree"
+      
+      -- Show hidden and gitignored files, but hide .git
+      conf.filters = {
+        dotfiles = false,  -- Show dotfiles like .env
+        git_ignored = false,  -- Show gitignored files
+        custom = { "^.git$" },  -- Only hide .git folder
+      }
+      
+      conf.git = {
+        enable = true,
+        ignore = false,  -- Don't ignore gitignored files
+      }
+      
+      return conf
+    end,
+  },
 }
