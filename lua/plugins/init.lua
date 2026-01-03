@@ -30,16 +30,42 @@ return {
             if client.server_capabilities.inlayHintProvider then
               vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
             end
-            -- Format on save with LSP
+            
+            -- Disable semantic tokens for cleaner syntax highlighting
+            client.server_capabilities.semanticTokensProvider = nil
+            
+            -- Format on save
             vim.api.nvim_create_autocmd("BufWritePre", {
               buffer = bufnr,
               callback = function()
                 vim.lsp.buf.format({ bufnr = bufnr })
               end,
             })
-            -- Force hide virtual text after LSP attaches
+            
+            -- Hide virtual text
             vim.diagnostic.config({ virtual_text = false })
           end,
+          default_settings = {
+            ["rust-analyzer"] = {
+              cargo = {
+                features = "all",  -- Enable all Cargo features
+              },
+              checkOnSave = true,
+              check = {
+                command = "clippy",
+              },
+              imports = {
+                group = {
+                  enable = false,  -- Don't auto-group imports
+                },
+              },
+              completion = {
+                postfix = {
+                  enable = false,  -- Disable postfix completions like .if
+                },
+              },
+            },
+          },
         },
         dap = {},
       }

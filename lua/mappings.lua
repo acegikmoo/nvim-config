@@ -10,6 +10,24 @@ map("i", "kk", "<ESC>")
 -- Quick open file in same directory
 map("n", "<leader>o", ':e <C-R>=expand("%:p:h") . "/" <CR>', { desc = "Open file in current dir" })
 
+-- Always center search results
+map("n", "n", "nzz", { silent = true, desc = "Next search result (centered)" })
+map("n", "N", "Nzz", { silent = true, desc = "Prev search result (centered)" })
+map("n", "*", "*zz", { silent = true, desc = "Search word under cursor (centered)" })
+map("n", "#", "#zz", { silent = true, desc = "Search word backward (centered)" })
+
+-- Jump to start and end of line using home row
+map("", "H", "^", { desc = "Jump to first non-blank character" })
+map("", "L", "$", { desc = "Jump to end of line" })
+
+-- Arrow keys switch buffers
+map("n", "<left>", ":bp<CR>", { desc = "Previous buffer" })
+map("n", "<right>", ":bn<CR>", { desc = "Next buffer" })
+
+-- Move by visual line when text is wrapped
+map("n", "j", "gj")
+map("n", "k", "gk")
+
 -- Nvim DAP
 map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
 map("n", "<Leader>dj", "<cmd>lua require'dap'.step_over()<CR>", { desc = "Debugger step over" })

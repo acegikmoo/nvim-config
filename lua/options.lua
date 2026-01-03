@@ -7,6 +7,14 @@ vim.opt.relativenumber = true
 vim.g.gui_font_ligatures = 0
 vim.opt.updatetime = 100
 vim.opt.showtabline = 0
+vim.opt.scrolloff = 8
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
+-- Better diff algorithm
+vim.opt.diffopt:append("iwhite")
+vim.opt.diffopt:append("algorithm:histogram")
+vim.opt.diffopt:append("indent-heuristic")
 
 -- Hide diagnostics inline by default, show with keybinding
 vim.diagnostic.config({
@@ -64,6 +72,26 @@ vim.api.nvim_create_autocmd({"BufLeave", "FocusLost"}, {
   end,
 })
 
+-- Highlight yanked text briefly
+vim.api.nvim_create_autocmd("TextYankPost", {
+  pattern = "*",
+  callback = function()
+    vim.highlight.on_yank({ timeout = 500 })
+  end,
+})
+
+-- Jump to last edit position when opening files
+vim.api.nvim_create_autocmd("BufReadPost", {
+  pattern = "*",
+  callback = function()
+    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+      if not vim.fn.expand("%:p"):find(".git", 1, true) then
+        vim.cmd('exe "normal! g\'\\\""')
+      end
+    end
+  end,
+})
+
 -- Disable automatic comment continuation
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
@@ -71,3 +99,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.formatoptions:remove({ "c", "r", "o" })
   end,
 })
+--
+-- Better command-line completion
+vim.opt.wildmode = "list:longest"
+vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site"
