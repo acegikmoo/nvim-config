@@ -7,8 +7,8 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jj", "<ESC>")
 map("i", "kk", "<ESC>")
-
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+-- Quick open file in same directory
+map("n", "<leader>o", ':e <C-R>=expand("%:p:h") . "/" <CR>', { desc = "Open file in current dir" })
 
 -- Nvim DAP
 map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
@@ -50,3 +50,24 @@ end, { desc = "Build and run" })
 map("n", "<C-a>", "ggVG", { desc = "Select all" })
 map("i", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
 map("v", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
+
+-- Faster diagnostic hover (shows immediately without delay)
+map("n", "K", function()
+  local winid = vim.api.nvim_get_current_win()
+  local bufnr = vim.api.nvim_win_get_buf(winid)
+  local row, col = unpack(vim.api.nvim_win_get_cursor(winid))
+  
+  -- Show diagnostics if on an error/warning
+  local diag = vim.diagnostic.get(bufnr, { lnum = row - 1 })
+  if #diag > 0 then
+    vim.diagnostic.open_float(nil, { focus = false })
+  else
+    vim.lsp.buf.hover()
+  end
+end, { desc = "Hover or show diagnostic" })
+
+-- Toggle virtual text on/off
+map("n", "<leader>td", function()
+  local current = vim.diagnostic.config().virtual_text
+  vim.diagnostic.config({ virtual_text = not current })
+end, { desc = "Toggle diagnostic virtual text" })

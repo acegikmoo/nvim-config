@@ -21,8 +21,7 @@ return {
     "mrcjkb/rustaceanvim",
     version = "^5",
     ft = { "rust" },
-    init = function()
-      -- Configure rustaceanvim before it loads
+    config = function()
       vim.g.rustaceanvim = {
         tools = {},
         server = {
@@ -38,38 +37,9 @@ return {
                 vim.lsp.buf.format({ bufnr = bufnr })
               end,
             })
+            -- Force hide virtual text after LSP attaches
+            vim.diagnostic.config({ virtual_text = false })
           end,
-          default_settings = {
-            ['rust-analyzer'] = {
-              -- Disable the deprecated cmp completion
-              completion = {
-                cmp = {
-                  enable = false  -- Try 'enable' instead of 'enabled'
-                }
-              },
-              checkOnSave = true,
-              check = {
-                command = "clippy",
-              },
-              diagnostics = {
-                enable = true,
-                disabled = {},
-                enableExperimental = true,
-              },
-              inlayHints = {
-                bindingModeHints = { enable = true },
-                chainingHints = { enable = true },
-                closingBraceHints = { enable = true, minLines = 25 },
-                closureReturnTypeHints = { enable = "always" },
-                lifetimeElisionHints = { enable = "always", useParameterNames = true },
-                maxLength = 25,
-                parameterHints = { enable = true },
-                reborrowHints = { enable = "always" },
-                renderColons = true,
-                typeHints = { enable = true, hideNamedConstructor = false },
-              },
-            },
-          },
         },
         dap = {},
       }
@@ -104,7 +74,7 @@ return {
     'saecki/crates.nvim',
     ft = {"toml"},
     config = function()
-      require("crates").setup()  -- Remove the completion config
+      require("crates").setup()
       require('cmp').setup.buffer({
         sources = { { name = "crates" }}
       })
@@ -138,14 +108,14 @@ return {
       
       -- Show hidden and gitignored files, but hide .git
       conf.filters = {
-        dotfiles = false,  -- Show dotfiles like .env
-        git_ignored = false,  -- Show gitignored files
-        custom = { "^.git$" },  -- Only hide .git folder
+        dotfiles = false,
+        git_ignored = false,
+        custom = { "^.git$" },
       }
       
       conf.git = {
         enable = true,
-        ignore = false,  -- Don't ignore gitignored files
+        ignore = false,
       }
       
       return conf
