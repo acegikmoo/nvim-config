@@ -24,10 +24,14 @@ lspconfig.clangd.setup {
   ),
 }
 
--- TypeScript/JavaScript LSP 
+-- TypeScript/JavaScript LSP (for MERN stack)
 lspconfig.ts_ls.setup {
   on_attach = function(client, bufnr)
     nvlsp.on_attach(client, bufnr)
+    
+    -- Disable LSP indentation on type
+    client.server_capabilities.documentOnTypeFormattingProvider = nil
+    
     -- Force hide virtual text after TS LSP attaches
     vim.diagnostic.config({ virtual_text = false })
   end,

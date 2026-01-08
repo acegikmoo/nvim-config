@@ -92,7 +92,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
   end,
 })
 
--- C++ specific settings (keep your preferences)
+-- C++ specific settings
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "cpp",
   callback = function()
@@ -101,5 +101,17 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.expandtab = true
     vim.opt_local.autoindent = true
     vim.opt_local.smartindent = true
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.smartindent = false
+    vim.opt_local.cindent = false
+    vim.opt_local.indentexpr = "" 
   end,
 })
