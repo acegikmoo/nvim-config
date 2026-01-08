@@ -69,6 +69,9 @@ map("n", "<C-a>", "ggVG", { desc = "Select all" })
 map("i", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
 map("v", "<C-a>", "<Esc>ggVG", { desc = "Select all" })
 
+-- Live rg
+map("n", "<C-p>", "<cmd>Telescope live_grep<CR>", { desc = "Search project (terminal safe)" })
+
 -- Faster diagnostic hover (shows immediately without delay)
 map("n", "K", function()
   local winid = vim.api.nvim_get_current_win()

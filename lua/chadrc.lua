@@ -22,4 +22,5 @@ M.ui = {
 		enabled = false,  -- Disable the top buffer line
 	},
 }
+
 return M

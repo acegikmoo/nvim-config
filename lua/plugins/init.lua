@@ -132,7 +132,7 @@ return {
     opts = function()
       local conf = require "nvchad.configs.nvimtree"
       
-      -- Show hidden and gitignored files, but hide .git
+      -- Your existing filters
       conf.filters = {
         dotfiles = false,
         git_ignored = false,
@@ -143,6 +143,12 @@ return {
         enable = true,
         ignore = false,
       }
+      
+      -- Remove git status icons
+      conf.renderer = conf.renderer or {}
+      conf.renderer.icons = conf.renderer.icons or {}
+      conf.renderer.icons.show = conf.renderer.icons.show or {}
+      conf.renderer.icons.show.git = false
       
       return conf
     end,
