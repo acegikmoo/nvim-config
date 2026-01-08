@@ -1,14 +1,26 @@
 require("nvchad.configs.lspconfig").defaults()
-
 local lspconfig = require("lspconfig")
 local nvlsp = require("nvchad.configs.lspconfig")
 
 -- Suppress deprecation warning
 vim.deprecate = function() end
 
--- C++ LSP with clangd
+-- C++ LSP with clangd + INSTANT format on save
 lspconfig.clangd.setup {
-  on_attach = nvlsp.on_attach,
+  on_attach = function(client, bufnr)
+    nvlsp.on_attach(client, bufnr)
+    
+    -- Format on save (instant with LSP)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ 
+          bufnr = bufnr,
+          timeout_ms = 1000,
+        })
+      end,
+    })
+  end,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,
   cmd = { "clangd" },
@@ -24,16 +36,24 @@ lspconfig.clangd.setup {
   ),
 }
 
--- TypeScript/JavaScript LSP (for MERN stack)
+-- TypeScript/JavaScript LSP + INSTANT format on save
 lspconfig.ts_ls.setup {
   on_attach = function(client, bufnr)
     nvlsp.on_attach(client, bufnr)
     
-    -- Disable LSP indentation on type
-    client.server_capabilities.documentOnTypeFormattingProvider = nil
-    
     -- Force hide virtual text after TS LSP attaches
     vim.diagnostic.config({ virtual_text = false })
+    
+    -- Format on save (instant with LSP)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({ 
+          bufnr = bufnr,
+          timeout_ms = 1000,
+        })
+      end,
+    })
   end,
   on_init = nvlsp.on_init,
   capabilities = nvlsp.capabilities,

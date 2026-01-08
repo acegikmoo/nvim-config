@@ -1,21 +1,14 @@
 local options = {
   formatters_by_ft = {
     lua = { "stylua" },
-    cpp = { "clang-format" },
-    c = { "clang-format" },
-    javascript = { "prettier" },
-    typescript = { "prettier" },
-    javascriptreact = { "prettier" },
-    typescriptreact = { "prettier" },
     json = { "prettier" },
     css = { "prettier" },
     html = { "prettier" },
     markdown = { "prettier" },
   },
-
   format_on_save = {
-    timeout_ms = 500,
-    lsp_fallback = true,
+    timeout_ms = 2000, 
+    lsp_fallback = false,
   },
 }
 return options
