@@ -31,28 +31,6 @@ vim.diagnostic.config({
     },
 })
 
--- Competitive Programming: Append template to new C++ files
-vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*.cpp",
-  callback = function()
-    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
-    vim.cmd("normal! 53G^i    ")
-    vim.cmd("startinsert")
-  end,
-})
-
--- C++ specific settings (keep your preferences)
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "cpp",
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
-    vim.opt_local.expandtab = true
-    vim.opt_local.autoindent = true
-    vim.opt_local.smartindent = true
-  end,
-})
-
 -- Rust specific settings (standard Rust formatting)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "rust",
@@ -76,7 +54,7 @@ vim.api.nvim_create_autocmd({"BufLeave", "FocusLost"}, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
   callback = function()
-    vim.highlight.on_yank({ timeout = 500 })
+    vim.highlight.on_yank({ timeout = 200 })
   end,
 })
 
@@ -99,7 +77,29 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.formatoptions:remove({ "c", "r", "o" })
   end,
 })
---
+
 -- Better command-line completion
 vim.opt.wildmode = "list:longest"
 vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site"
+
+-- Competitive Programming: Append template to new C++ files
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*.cpp",
+  callback = function()
+    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
+    vim.cmd("normal! 53G^i    ")
+    vim.cmd("startinsert")
+  end,
+})
+
+-- C++ specific settings (keep your preferences)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "cpp",
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+    vim.opt_local.autoindent = true
+    vim.opt_local.smartindent = true
+  end,
+})

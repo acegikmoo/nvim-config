@@ -23,3 +23,26 @@ lspconfig.clangd.setup {
     '.git'
   ),
 }
+
+-- TypeScript/JavaScript LSP 
+lspconfig.ts_ls.setup {
+  on_attach = function(client, bufnr)
+    nvlsp.on_attach(client, bufnr)
+    -- Force hide virtual text after TS LSP attaches
+    vim.diagnostic.config({ virtual_text = false })
+  end,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  filetypes = { 
+    "typescript", 
+    "javascript", 
+    "javascriptreact", 
+    "typescriptreact" 
+  },
+  root_dir = lspconfig.util.root_pattern(
+    "package.json", 
+    "tsconfig.json", 
+    "jsconfig.json", 
+    ".git"
+  ),
+}

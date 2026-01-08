@@ -25,7 +25,7 @@ map("n", "<left>", ":bp<CR>", { desc = "Previous buffer" })
 map("n", "<right>", ":bn<CR>", { desc = "Next buffer" })
 
 -- Move by visual line when text is wrapped
-map("n", "j", "gj")
+  map("n", "j", "gj")
 map("n", "k", "gk")
 
 -- Nvim DAP
@@ -83,9 +83,3 @@ map("n", "K", function()
     vim.lsp.buf.hover()
   end
 end, { desc = "Hover or show diagnostic" })
-
--- Toggle virtual text on/off
-map("n", "<leader>td", function()
-  local current = vim.diagnostic.config().virtual_text
-  vim.diagnostic.config({ virtual_text = not current })
-end, { desc = "Toggle diagnostic virtual text" })
