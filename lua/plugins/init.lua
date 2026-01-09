@@ -115,8 +115,20 @@ return {
     opts = function()
       local conf = require "nvchad.configs.telescope"
       
-      -- Show hidden and gitignored files, but hide .git folder
-      conf.defaults.file_ignore_patterns = { "^%.git/", "%.git/" }
+      conf.defaults.file_ignore_patterns = { 
+        "^%.git/", 
+        "%.git/",
+        "node_modules/",
+        "%.next/",
+        "dist/",
+        "build/",
+        "target/",
+        "%.cargo/",
+        "package%-lock%.json",
+        "yarn%.lock",
+        "pnpm%-lock%.yaml",
+      }
+      
       conf.pickers = {
         find_files = {
           hidden = true,
@@ -132,7 +144,6 @@ return {
     opts = function()
       local conf = require "nvchad.configs.nvimtree"
       
-      -- Your existing filters
       conf.filters = {
         dotfiles = false,
         git_ignored = false,

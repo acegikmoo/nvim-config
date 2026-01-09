@@ -6,7 +6,9 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jj", "<ESC>")
+map("i", "JJ", "<ESC>")
 map("i", "kk", "<ESC>")
+map("i", "KK", "<ESC>")
 -- Quick open file in same directory
 map("n", "<leader>o", ':e <C-R>=expand("%:p:h") . "/" <CR>', { desc = "Open file in current dir" })
 
