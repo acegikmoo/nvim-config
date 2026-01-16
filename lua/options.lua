@@ -104,14 +104,15 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+-- TypeScript/JavaScript specific settings (standard 2-space indentation)
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+  pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "jsonc" },
   callback = function()
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
+    vim.opt_local.softtabstop = 2
     vim.opt_local.expandtab = true
     vim.opt_local.smartindent = true
-    vim.opt_local.cindent = false
-    vim.opt_local.indentexpr = "" 
+    vim.opt_local.autoindent = true
   end,
 })
