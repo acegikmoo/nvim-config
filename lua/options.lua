@@ -1,8 +1,7 @@
 require "nvchad.options"
--- add yours here!
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
 
+-- Basic Options
+vim.opt.showcmd = false
 vim.opt.relativenumber = true
 vim.g.gui_font_ligatures = 0
 vim.opt.updatetime = 100
@@ -16,33 +15,27 @@ vim.opt.diffopt:append("iwhite")
 vim.opt.diffopt:append("algorithm:histogram")
 vim.opt.diffopt:append("indent-heuristic")
 
--- Hide diagnostics inline by default, show with keybinding
+-- Better command-line completion
+vim.opt.wildmode = "list:longest"
+vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site"
+
+-- Diagnostics Configuration
 vim.diagnostic.config({
-  virtual_text = false,  -- Hide inline
-  signs = true,          -- Show signs in gutter
-  underline = true,      -- Underline errors
+  virtual_text = false,
+  signs = true,
+  underline = true,
   update_in_insert = false,
   severity_sort = true,
   float = {
-      border = "rounded",
-      source = "always",
-      focusable = false,
-      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-    },
-})
-
--- Rust specific settings (standard Rust formatting)
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "rust",
-  callback = function()
-    vim.opt_local.tabstop = 4
-    vim.opt_local.shiftwidth = 4
-    vim.opt_local.expandtab = true
-  end,
+    border = "rounded",
+    source = "always",
+    focusable = false,
+    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+  },
 })
 
 -- Auto-save when switching buffers/files
-vim.api.nvim_create_autocmd({"BufLeave", "FocusLost"}, {
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   callback = function()
     if vim.bo.modified and not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
       vim.api.nvim_command('silent! write')
@@ -78,17 +71,13 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Better command-line completion
-vim.opt.wildmode = "list:longest"
-vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site"
-
--- Competitive Programming: Append template to new C++ files
-vim.api.nvim_create_autocmd("BufNewFile", {
-  pattern = "*.cpp",
+-- Rust specific settings (standard Rust formatting)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "rust",
   callback = function()
-    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
-    vim.cmd("normal! 53G^i    ")
-    vim.cmd("startinsert")
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
   end,
 })
 
@@ -114,5 +103,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.expandtab = true
     vim.opt_local.smartindent = true
     vim.opt_local.autoindent = true
+  end,
+})
+
+-- Competitive Programming: Append template to new C++ files
+vim.api.nvim_create_autocmd("BufNewFile", {
+  pattern = "*.cpp",
+  callback = function()
+    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
+    vim.cmd("normal! 53G^i    ")
+    vim.cmd("startinsert")
   end,
 })

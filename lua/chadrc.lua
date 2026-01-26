@@ -9,7 +9,7 @@ pcall(require, "custom.lsp_silence")
 local M = {}
 
 M.base46 = {
-	theme = "gruvbox",
+	theme = "gruvchad",
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
