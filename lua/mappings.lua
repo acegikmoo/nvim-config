@@ -61,10 +61,16 @@ end, { desc = "Toggle inlay hints" })
 map("n", "<leader>bb", "<cmd>w | !build.sh %:r<CR>", { desc = "Build" })
 map("n", "<leader>br", function()
   vim.cmd("w")
-  vim.cmd("!build.sh " .. vim.fn.expand("%:r"))
-  vim.cmd("split | terminal ./" .. vim.fn.expand("%:r"))
-  vim.cmd("startinsert")
-end, { desc = "Build and run" })
+  local file_root = vim.fn.expand("%:r")
+  vim.cmd("!build.sh " .. file_root)
+  
+  -- This makes the CP output part of managed terminals
+require("nvchad.term").toggle { 
+    pos = "sp", 
+    id = "cpp_output", 
+    cmd = "./" .. file_root .. "; read" 
+  }
+end, { desc = "Build and run (Managed)" })
 
 -- Select all with Ctrl+a
 map("n", "<C-a>", "ggVG", { desc = "Select all" })
@@ -88,3 +94,40 @@ map("n", "K", function()
     vim.lsp.buf.hover()
   end
 end, { desc = "Hover or show diagnostic" })
+
+-- Toggle or Create a Named Terminal
+-- Usage: Press <leader>tt, type 'server', hit enter. 
+-- To hide/show it again, just repeat the same name.
+map({ "n", "t" }, "<leader>tt", function()
+  vim.ui.input({ prompt = "Terminal ID (e.g. server, logs, run): " }, function(input)
+    if input and input ~= "" then
+      require("nvchad.term").toggle { 
+        pos = "sp", 
+        id = input 
+      }
+    end
+  end)
+end, { desc = "Terminal: Toggle by ID" })
+
+-- The "Management Console" (Fuzzy Finder)
+-- This opens Telescope to see all your named terminals in one list.
+map("n", "<leader>tm", "<cmd>Telescope terms<CR>", { desc = "Terminal: Management Console" })
+
+-- Terminal Escaping 
+-- Standard NvChad is <C-x> 
+map("t", "jj", "<C-\\><C-n>", { desc = "Terminal: Escape to Normal Mode" })
+
+-- Quick Vertical Terminal (Independent of Named ones)
+map({ "n", "t" }, "<leader>tv", function()
+  require("nvchad.term").toggle { pos = "vsp", id = "vsplit_term" }
+end, { desc = "Terminal: Toggle Vertical" })
+
+-- Use Alt+x to kill any terminal instantly
+map({ "n", "t" }, "<A-x>", function()
+  local bufnr = vim.api.nvim_get_current_buf()
+  if vim.bo.buftype == "terminal" then
+    vim.cmd "stopinsert"
+    vim.api.nvim_buf_delete(bufnr, { force = true })
+  end
+end, { desc = "Terminal: Quick Kill" })
+
