@@ -48,7 +48,7 @@ return {
           default_settings = {
             ["rust-analyzer"] = {
               cargo = {
-                features = "all",  -- Enable all Cargo features
+                features = "all",
               },
               checkOnSave = true,
               check = {
@@ -56,12 +56,12 @@ return {
               },
               imports = {
                 group = {
-                  enable = false,  -- Don't auto-group imports
+                  enable = false,
                 },
               },
               completion = {
                 postfix = {
-                  enable = false,  -- Disable postfix completions like .if
+                  enable = false,
                 },
               },
             },
@@ -155,13 +155,27 @@ return {
         ignore = false,
       }
       
-      -- Remove git status icons
       conf.renderer = conf.renderer or {}
       conf.renderer.icons = conf.renderer.icons or {}
       conf.renderer.icons.show = conf.renderer.icons.show or {}
       conf.renderer.icons.show.git = false
       
       return conf
+    end,
+  },
+  {
+    "windwp/nvim-ts-autotag",
+    ft = {
+      "html",
+      "javascript",
+      "typescript",
+      "javascriptreact",
+      "typescriptreact",
+      "svelte",
+      "vue",
+    },
+    config = function()
+      require("nvim-ts-autotag").setup()
     end,
   },
 }

@@ -70,3 +70,11 @@ lspconfig.ts_ls.setup {
     ".git"
   ),
 }
+
+-- HTML LSP with auto-closing tags
+lspconfig.html.setup {
+  on_attach = nvlsp.on_attach,
+  on_init = nvlsp.on_init,
+  capabilities = nvlsp.capabilities,
+  filetypes = { "html", "htmldjango", "templ" },
+}
