@@ -1,7 +1,7 @@
 return {
   {
     "stevearc/conform.nvim",
-    event = 'BufWritePre', 
+    event = "BufWritePre",
     opts = require "configs.conform",
   },
   {
@@ -30,20 +30,20 @@ return {
             if client.server_capabilities.inlayHintProvider then
               vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
             end
-            
+
             -- Disable semantic tokens for cleaner syntax highlighting
             client.server_capabilities.semanticTokensProvider = nil
-            
+
             -- Format on save
             vim.api.nvim_create_autocmd("BufWritePre", {
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr })
+                vim.lsp.buf.format { bufnr = bufnr }
               end,
             })
-            
+
             -- Hide virtual text
-            vim.diagnostic.config({ virtual_text = false })
+            vim.diagnostic.config { virtual_text = false }
           end,
           default_settings = {
             ["rust-analyzer"] = {
@@ -72,9 +72,9 @@ return {
     end,
   },
   {
-    'mfussenegger/nvim-dap',
+    "mfussenegger/nvim-dap",
     config = function()
-      local dap, dapui = require("dap"), require("dapui")
+      local dap, dapui = require "dap", require "dapui"
       dap.listeners.before.attach.dapui_config = function()
         dapui.open()
       end
@@ -90,21 +90,21 @@ return {
     end,
   },
   {
-    'rcarriga/nvim-dap-ui', 
-    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+    "rcarriga/nvim-dap-ui",
+    dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     config = function()
       require("dapui").setup()
     end,
   },
   {
-    'saecki/crates.nvim',
-    ft = {"toml"},
+    "saecki/crates.nvim",
+    ft = { "toml" },
     config = function()
       require("crates").setup()
-      require('cmp').setup.buffer({
-        sources = { { name = "crates" }}
-      })
-    end
+      require("cmp").setup.buffer {
+        sources = { { name = "crates" } },
+      }
+    end,
   },
   {
     "octol/vim-cpp-enhanced-highlight",
@@ -114,9 +114,9 @@ return {
     "nvim-telescope/telescope.nvim",
     opts = function()
       local conf = require "nvchad.configs.telescope"
-      
-      conf.defaults.file_ignore_patterns = { 
-        "^%.git/", 
+
+      conf.defaults.file_ignore_patterns = {
+        "^%.git/",
         "%.git/",
         "node_modules/",
         "%.next/",
@@ -128,14 +128,14 @@ return {
         "yarn%.lock",
         "pnpm%-lock%.yaml",
       }
-      
+
       conf.pickers = {
         find_files = {
           hidden = true,
           no_ignore = true,
         },
       }
-      
+
       return conf
     end,
   },
@@ -143,23 +143,23 @@ return {
     "nvim-tree/nvim-tree.lua",
     opts = function()
       local conf = require "nvchad.configs.nvimtree"
-      
+
       conf.filters = {
         dotfiles = false,
         git_ignored = false,
         custom = { "^.git$" },
       }
-      
+
       conf.git = {
         enable = true,
         ignore = false,
       }
-      
+
       conf.renderer = conf.renderer or {}
       conf.renderer.icons = conf.renderer.icons or {}
       conf.renderer.icons.show = conf.renderer.icons.show or {}
       conf.renderer.icons.show.git = false
-      
+
       return conf
     end,
   },
@@ -177,5 +177,54 @@ return {
     config = function()
       require("nvim-ts-autotag").setup()
     end,
+  },
+  -- Prisma support
+  {
+    "prisma/vim-prisma",
+    ft = "prisma",
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim",
+        "lua",
+        "vimdoc",
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "tsx",
+        "c",
+        "cpp",
+        "rust",
+        "prisma",
+      },
+    },
+  },
+  -- INLINE COLOR PREVIEW
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = "BufReadPre",
+    opts = {
+      filetypes = { "*" },
+      user_default_options = {
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = true, -- "Name" codes like Blue or red
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        AARRGGBB = true, -- 0xAARRGGBB hex codes
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        mode = "background", -- Set the display mode: "foreground", "background", "virtualtext"
+        tailwind = true, -- Enable tailwind colors
+        sass = { enable = true, parsers = { "css" } },
+        virtualtext = "■", -- Character to show in virtual text mode
+        always_update = false,
+      },
+      buftypes = {},
+    },
   },
 }
