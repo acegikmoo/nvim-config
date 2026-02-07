@@ -11,16 +11,20 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Better diff algorithm
-vim.opt.diffopt:append("iwhite")
-vim.opt.diffopt:append("algorithm:histogram")
-vim.opt.diffopt:append("indent-heuristic")
+vim.opt.diffopt:append "iwhite"
+vim.opt.diffopt:append "algorithm:histogram"
+vim.opt.diffopt:append "indent-heuristic"
 
 -- Better command-line completion
 vim.opt.wildmode = "list:longest"
 vim.opt.wildignore = ".hg,.svn,*~,*.png,*.jpg,*.gif,*.min.js,*.swp,*.o,vendor,dist,_site"
 
+-- Terminal performance optimization
+vim.opt.lazyredraw = true
+vim.opt.ttyfast = true
+
 -- Diagnostics Configuration
-vim.diagnostic.config({
+vim.diagnostic.config {
   virtual_text = false,
   signs = true,
   underline = true,
@@ -32,13 +36,13 @@ vim.diagnostic.config({
     focusable = false,
     close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
   },
-})
+}
 
 -- Auto-save when switching buffers/files
 vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
   callback = function()
-    if vim.bo.modified and not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
-      vim.api.nvim_command('silent! write')
+    if vim.bo.modified and not vim.bo.readonly and vim.fn.expand "%" ~= "" and vim.bo.buftype == "" then
+      vim.api.nvim_command "silent! write"
     end
   end,
 })
@@ -47,7 +51,7 @@ vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 vim.api.nvim_create_autocmd("TextYankPost", {
   pattern = "*",
   callback = function()
-    vim.highlight.on_yank({ timeout = 200 })
+    vim.highlight.on_yank { timeout = 200 }
   end,
 })
 
@@ -55,9 +59,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("BufReadPost", {
   pattern = "*",
   callback = function()
-    if vim.fn.line("'\"") > 1 and vim.fn.line("'\"") <= vim.fn.line("$") then
+    if vim.fn.line "'\"" > 1 and vim.fn.line "'\"" <= vim.fn.line "$" then
       if not vim.fn.expand("%:p"):find(".git", 1, true) then
-        vim.cmd('exe "normal! g\'\\\""')
+        vim.cmd 'exe "normal! g\'\\""'
       end
     end
   end,
@@ -67,7 +71,32 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   callback = function()
-    vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+    vim.opt_local.formatoptions:remove { "c", "r", "o" }
+  end,
+})
+
+-- Terminal-specific optimizations
+vim.api.nvim_create_autocmd("TermOpen", {
+  pattern = "*",
+  callback = function()
+    -- Disable line numbers in terminal
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+
+    -- Disable sign column in terminal
+    vim.opt_local.signcolumn = "no"
+
+    -- Disable cursor line highlighting
+    vim.opt_local.cursorline = false
+
+    -- Reduce scrollback for performance
+    vim.opt_local.scrollback = 1000
+
+    -- CRITICAL: Unmap leader key in terminal to prevent delay
+    vim.keymap.set("t", "<Space>", "<Space>", { buffer = true, nowait = true })
+
+    -- Start in insert mode
+    vim.cmd "startinsert"
   end,
 })
 
@@ -110,8 +139,8 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufNewFile", {
   pattern = "*.cpp",
   callback = function()
-    vim.cmd("0r /home/acegikmo/vimcp/Library/Template.cpp")
-    vim.cmd("normal! 53G^i    ")
-    vim.cmd("startinsert")
+    vim.cmd "0r /home/acegikmo/vimcp/Library/Template.cpp"
+    vim.cmd "normal! 53G^i    "
+    vim.cmd "startinsert"
   end,
 })
