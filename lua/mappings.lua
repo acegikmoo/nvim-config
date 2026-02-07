@@ -63,6 +63,13 @@ map("n", "<Leader>th", function()
   vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
 end, { desc = "Toggle inlay hints" })
 
+-- Toggle format on save
+map("n", "<Leader>fs", function()
+  vim.g.format_on_save = not vim.g.format_on_save
+  local status = vim.g.format_on_save and "enabled" or "disabled"
+  print("Format on save: " .. status)
+end, { desc = "Toggle format on save" })
+
 -- DEBUGGING (DAP)
 
 map("n", "<Leader>dl", "<cmd>lua require'dap'.step_into()<CR>", { desc = "Debugger step into" })
@@ -80,20 +87,18 @@ map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", { desc = "Debugg
 map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", { desc = "Debugger run last" })
 map("n", "<Leader>dt", "<cmd>lua vim.cmd('RustLsp testables')<CR>", { desc = "Debugger testables" })
 
-
 -- FILE EXPLORER (NvimTree)
 map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
-map("n", "<leader>tf", "<cmd>NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
+map("n", "<leader>tF", "<cmd>NvimTreeFindFile<CR>", { desc = "Find current file in tree" })
 
 -- SEARCH (Telescope)
 map("n", "<C-p>", "<cmd>Telescope live_grep<CR>", { desc = "Search project (terminal safe)" })
 
-
 -- COMPETITIVE PROGRAMMING (C++)
 map("n", "<leader>bb", "<cmd>w | !build.sh %:r<CR>", { desc = "Build" })
 map("n", "<leader>br", function()
-  vim.cmd("w")
-  local file_root = vim.fn.expand("%:r")
+  vim.cmd "w"
+  local file_root = vim.fn.expand "%:r"
   vim.cmd("!build.sh " .. file_root)
 
   -- This makes the CP output part of managed terminals

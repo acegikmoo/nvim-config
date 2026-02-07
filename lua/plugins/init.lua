@@ -34,11 +34,13 @@ return {
             -- Disable semantic tokens for cleaner syntax highlighting
             client.server_capabilities.semanticTokensProvider = nil
 
-            -- Format on save
+            -- Format on save (conditional)
             vim.api.nvim_create_autocmd("BufWritePre", {
               buffer = bufnr,
               callback = function()
-                vim.lsp.buf.format { bufnr = bufnr }
+                if vim.g.format_on_save then
+                  vim.lsp.buf.format { bufnr = bufnr }
+                end
               end,
             })
 

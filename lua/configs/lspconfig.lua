@@ -5,19 +5,24 @@ local nvlsp = require "nvchad.configs.lspconfig"
 -- Suppress deprecation warning
 vim.deprecate = function() end
 
--- C++ LSP with clangd + INSTANT format on save
+-- Initialize format_on_save as enabled by default
+vim.g.format_on_save = true
+
+-- C++ LSP with clangd + CONDITIONAL format on save
 lspconfig.clangd.setup {
   on_attach = function(client, bufnr)
     nvlsp.on_attach(client, bufnr)
 
-    -- Format on save (instant with LSP)
+    -- Format on save (conditional)
     vim.api.nvim_create_autocmd("BufWritePre", {
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format {
-          bufnr = bufnr,
-          timeout_ms = 1000,
-        }
+        if vim.g.format_on_save then
+          vim.lsp.buf.format {
+            bufnr = bufnr,
+            timeout_ms = 1000,
+          }
+        end
       end,
     })
   end,
@@ -36,7 +41,7 @@ lspconfig.clangd.setup {
   ),
 }
 
--- TypeScript/JavaScript LSP + INSTANT format on save
+-- TypeScript/JavaScript LSP + CONDITIONAL format on save
 lspconfig.ts_ls.setup {
   on_attach = function(client, bufnr)
     nvlsp.on_attach(client, bufnr)
@@ -44,14 +49,16 @@ lspconfig.ts_ls.setup {
     -- Force hide virtual text after TS LSP attaches
     vim.diagnostic.config { virtual_text = false }
 
-    -- Format on save (instant with LSP)
+    -- Format on save (conditional)
     -- vim.api.nvim_create_autocmd("BufWritePre", {
     --   buffer = bufnr,
     --   callback = function()
-    --     vim.lsp.buf.format({
-    --       bufnr = bufnr,
-    --       timeout_ms = 1000,
-    --     })
+    --     if vim.g.format_on_save then
+    --       vim.lsp.buf.format({
+    --         bufnr = bufnr,
+    --         timeout_ms = 1000,
+    --       })
+    --     end
     --   end,
     -- })
   end,
