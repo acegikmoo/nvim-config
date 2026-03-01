@@ -10,10 +10,15 @@ local M = {}
 M.base46 = {
   theme = "gruvbox",
 
-  -- hl_override = {
-  -- 	Comment = { italic = true },
-  -- 	["@comment"] = { italic = true },
-  -- },
+  hl_override = {
+    Comment = { italic = false },
+    ["@comment"] = { italic = false },
+    Normal = { fg = "#ebdbb2" }, -- brighter foreground
+    NormalFloat = { fg = "#ebdbb2" },
+  },
+
+  -- Try this for more contrast
+  transparency = false,
 }
 
 M.ui = {

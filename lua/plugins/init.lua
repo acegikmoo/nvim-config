@@ -202,12 +202,14 @@ return {
         "rust",
         "prisma",
       },
+      -- CRITICAL: Enable Tree-sitter indentation
+      indent = {
+        enable = true,
+      },
     },
   },
   {
     "folke/which-key.nvim",
-    opts = {
-      delay = 0,
-    },
+    enabled = false,
   },
 }

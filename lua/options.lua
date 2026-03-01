@@ -122,7 +122,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- TypeScript/JavaScript specific settings (standard 2-space indentation)
+-- TypeScript/JavaScript/JSX/TSX specific settings with TREE-SITTER indent
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "jsonc" },
   callback = function()
@@ -130,8 +130,14 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.shiftwidth = 2
     vim.opt_local.softtabstop = 2
     vim.opt_local.expandtab = true
-    vim.opt_local.smartindent = true
-    vim.opt_local.autoindent = true
+
+    -- USE TREE-SITTER FOR JSX INDENTATION
+    vim.opt_local.indentexpr = "nvim_treesitter#indent()"
+
+    -- Disable smartindent/cindent as they conflict with tree-sitter
+    vim.opt_local.smartindent = false
+    vim.opt_local.cindent = false
+    vim.opt_local.autoindent = true -- Keep basic autoindent as fallback
   end,
 })
 
